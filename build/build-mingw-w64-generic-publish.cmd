@@ -12,19 +12,17 @@ set zobj=adler32.o crc32.o deflate.o gzlib.o inffast.o inflate.o inftrees.o tree
 
 rem * The following settings are for a release build.
 rem * For a debug build remove -DNDEBUG to enable asserts and array bound checks and add -Wall to show compiler warnings.
-set options=-DNDEBUG -I%zpath%  -O3 -m64 -march=nocona -mtune=generic -flto -fwhole-program -floop-strip-mine -funroll-loops -ftree-vectorize -fgcse-sm -falign-loops=16
+set options=-DNDEBUG -I%zpath% -O3 -m64 -march=nocona -mtune=generic -flto -fwhole-program -floop-strip-mine -funroll-loops -ftree-vectorize -fgcse-sm -falign-loops=16
 
 del _error1_zlib.txt >nul 2>&1
 del _error2_paq.txt  >nul 2>&1
 del paq8px.exe       >nul 2>&1
 
-
-gcc.exe -c %options% -fexceptions %zsrc%     2>_error1_zlib.txt
+gcc.exe -c %options% -fexceptions %zsrc% 2>_error1_zlib.txt
 IF %ERRORLEVEL% NEQ 0 goto end
 
-g++.exe -s -static -fno-rtti -std=gnu++1z %options% %zobj% ../file/*.cpp ../filter/*.cpp ../model/*.cpp ../text/*.cpp ../*.cpp -opaq8px.exe    2>_error2_paq.txt
+g++.exe -s -static -fno-rtti -std=gnu++1z %options% %zobj% ../file/*.cpp ../filter/*.cpp ../model/*.cpp ../text/*.cpp ../*.cpp -opaq8px.exe 2>_error2_paq.txt
 IF %ERRORLEVEL% NEQ 0 goto end
-
 
 :end
 del *.o
